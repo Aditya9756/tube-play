@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.tube.oldphone",
+      "sha256_cert_fingerprints": [
+        "5F:A3:1F:EC:C2:D7:46:F9:A7:BA:1C:87:87:20:D6:44:99:25:AE:41:AA:17:0B:A1:25:C2:37:37:63:3A:A3:33"
+      ]
+    }
+  }
+]
