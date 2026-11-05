@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tube Play — Signing you in…</title>
+<style>
+body{font-family:system-ui,-apple-system,Arial,sans-serif;margin:0;color:#222;background:#fff;text-align:center}
+header{background:#ff0000;color:#fff;padding:24px 20px}
+header h1{margin:0;font-size:28px}
+main{max-width:560px;margin:0 auto;padding:32px 20px}
+p{line-height:1.6;font-size:17px}
+.btn{display:inline-block;background:#ff0000;color:#fff;padding:14px 26px;border-radius:28px;text-decoration:none;font-weight:700;font-size:18px;margin-top:16px}
+small{color:#666}
+</style>
+</head>
+<body>
+<header><h1>▶ Tube Play</h1></header>
+<main>
+<h2 id="title">Signing you in…</h2>
+<p id="msg">Please wait — taking you back to the Tube Play app.</p>
+<p><a class="btn" id="backBtn" href="#">Tube Play app me wapas jao</a></p>
+<p><small>If the app does not open by itself, tap the red button above.
+Agar app khud nahi khulti to upar wala laal button dabao.</small></p>
+</main>
+<script>
+(function(){
+  var q = new URLSearchParams(window.location.search);
+  var code = q.get('code'), state = q.get('state'), err = q.get('error');
+  var title = document.getElementById('title');
+  var msg = document.getElementById('msg');
+  var btn = document.getElementById('backBtn');
+  if (err) {
+    title.textContent = 'Sign-in cancel ho gaya';
+    msg.textContent = 'Google sign-in complete nahi hua (' + err + '). Is tab ko band karke Tube Play app me dobara try karo.';
+    btn.style.display = 'none';
+    return;
+  }
+  if (!code) {
+    title.textContent = 'Kuch mila nahi';
+    msg.textContent = 'Google se koi code nahi mila. Is tab ko band karke Tube Play app me dobara try karo.';
+    btn.style.display = 'none';
+    return;
+  }
+  // Code ko app tak pahunchana: custom scheme link (ye page sirf forward
+  // karta hai; code yahan save nahi hota, aur PKCE ke bina code bekaar hai).
+  var appUrl = 'com.tube.oldphone:/oauth2redirect?code=' + encodeURIComponent(code)
+    + (state ? '&state=' + encodeURIComponent(state) : '');
+  btn.href = appUrl;
+  title.textContent = 'Sign-in ho gaya!';
+  msg.textContent = 'Tube Play app me wapas ja rahe hain…';
+  // Auto try karo; browser roke to user button dabayega.
+  setTimeout(function(){ window.location.replace(appUrl); }, 800);
+})();
+</script>
+</body>
+</html>
