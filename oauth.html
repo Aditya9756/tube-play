@@ -49,8 +49,19 @@ Agar app khud nahi khulti to upar wala laal button dabao.</small></p>
   btn.href = appUrl;
   title.textContent = 'Sign-in ho gaya!';
   msg.textContent = 'Tube Play app me wapas ja rahe hain…';
+  // Sirf EK baar app ko forward karo. Auto-redirect (800ms) + button-tap
+  // dono se code do baar app tak ja sakta hai — Google doosri baar wahi
+  // code "invalid_grant" kehkar mana kar deta hai (v11 me app me bhi
+  // guard hai, par yahan bhi ek hi baar bhejna sahi hai).
+  var redirected = false;
+  function goApp() {
+    if (redirected) return;
+    redirected = true;
+    window.location.replace(appUrl);
+  }
+  btn.addEventListener('click', function(e) { e.preventDefault(); goApp(); });
   // Auto try karo; browser roke to user button dabayega.
-  setTimeout(function(){ window.location.replace(appUrl); }, 800);
+  setTimeout(goApp, 800);
 })();
 </script>
 </body>
